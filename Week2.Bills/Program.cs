@@ -24,6 +24,7 @@
 //Una volta calcolata, stampare a video e
 //su un file txt le informazioni della bolletta,
 //codice fiscale, nome, cognome, kWh e importo da pagare.
+//e si torna al menu principale.
 
 //ALTRIMENTI, a video compare: 'Cliente non trovato'
 //e si torna al menu principale.
@@ -35,6 +36,12 @@
 //recuperare il contenuto del file
 //e mostrare a video SOLO le bollette associate
 //al codice fiscale dell'utente
+//e si torna al menu principale.
 
 //ALTRIMENTI
 //'Cliente non trovato'
+//e si torna al menu principale.
+
+using Week2.Bills;
+
+Menu.Start();
