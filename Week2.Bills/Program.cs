@@ -29,7 +29,7 @@
 //ALTRIMENTI, a video compare: 'Cliente non trovato'
 //e si torna al menu principale.
 
-//2- visualizzare le bollette,
+//2- visualizzare le bollette.
 //L'utente deve inserire il suo cf.
 
 //SE il codice fiscale è tra quelli nell'array,
