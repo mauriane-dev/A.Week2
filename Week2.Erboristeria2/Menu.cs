@@ -42,8 +42,12 @@ namespace Week2.Erboristeria2
                         AddNewProduct();
                         break;
                     case '6':
+                        //Visualizzare i prodotti di una certa fascia di prezzo
+                        FilterProductsByPrice();
                         break;
                     case '7':
+                        //Eliminare un prodotto dallo store
+                        DeleteProduct();
                         break;
                     case 'Q':
                         break;
@@ -55,56 +59,136 @@ namespace Week2.Erboristeria2
             } while (exit);
         }
 
+        private static void DeleteProduct()
+        {
+            //Utente inserisce il codice
+            string code = GetInfo("codice del prodotto da eliminare");
+
+            //Cerco nella lista di prodotti se c'è un prodotto con questo codice
+            Product product = ErboristeriaManager.GetByCode(code);
+
+            if (product != null)
+            {
+                //se c'è, lo posso cancellare
+                bool isDeleted = ErboristeriaManager.Delete(product);
+
+                if (isDeleted)
+                {
+                    Console.WriteLine("Prodotto eliminato correttamente");
+                }
+                else
+                {
+                    Console.WriteLine("Rimozione non completata");
+                }
+            }
+            else
+            {
+                //se non c'è
+                Console.WriteLine("Non c'è un prodotto con questo codice");
+            }
+        }
+
         private static void AddNewProduct()
         {
             //Utente inserisce il codice
             string code = GetInfo("codice");
 
-            //TODO: Inserire un controllo per verificare che non ci sia già un prodotto con questo codice 
-            //nella lista di prodotti 
-            //Cercare nella lista di prodotti se c'è un prodotto con questo codice
-            //con un metodo della clase ErboristeriaManager 
-            //Il metodo lo chiamo qui.
+            //verificare che non ci sia già un prodotto con questo codice 
+            Product product = ErboristeriaManager.GetByCode(code);
 
-            //Se c'è -> non procedo con l'aggiunta -> "Esiste già un prodotto con questo codice"
+            if (product != null)
+            {
+                //Se c'è -> non procedo con l'aggiunta -> "Esiste già un prodotto con questo codice"
+                Console.WriteLine("Esiste già un prodotto con questo codice");
+            }
+            else
+            {
+                //Altrimenti (se non c'è già un prodotto con questo codice scritto dall'utente)
+                //-> chiedo le altre informazioni sul nuovo prodotto da aggiungere:
 
-            //Altrimenti (se non c'è già un prodotto con questo codice scritto dall'utente)
-            //-> chiedo le altre informazioni sul nuovo prodotto da aggiungere:
+                //Utente inserisce il nome
+                string name = GetInfo("nome");
 
-            //Utente inserisce il nome
-            string name = GetInfo("nome");
+                //Utente inserisce il prezzo
+                decimal price = GetPrice("");
 
-            //Utente inserisce il prezzo
-            decimal price = GetPrice();
+                //Utente inserisce la categoria
+                int category = GetCategory();
 
-            //Utente inserisce la categoria
-            int category = GetCategory();
+                //Aggiungere il prodotto alla lista di prodotti
+                //Chiamo un metodo dell'ErboristeriaManager che fa solo l'aggiunta del prodotto
 
-            //Aggiungere il prodotto alla lista di prodotti
-            //Chiamo un metodo dell'ErboristeriaManager che fa solo l'aggiunta del prodotto
+                //Product newProduct = new Product()
+                //{
+                //    Code = code,
+                //    Name = name,
+                //    Category = (CategoryEnum)category,
+                //    Price = price
+                //};
 
+                Product newProduct = new Product(code, name, price, (CategoryEnum)category);
+
+                bool isAdded = ErboristeriaManager.AddProduct(newProduct);
+
+                if (isAdded)
+                {
+                    Console.WriteLine("Prodotto aggiunto correttamente");
+                }
+                else
+                {
+                    Console.WriteLine("Aggiunta non completata");
+                }
+            }
         }
+
+        private static void FilterProductsByPrice()
+        {
+            Console.WriteLine("Scegli la fascia di prezzo di cui vuoi visualizzare i prodotti");
+
+            decimal minPrice = GetPrice("minimo");
+
+            decimal maxPrice = 0;
+
+            while (maxPrice < minPrice)
+            {
+                maxPrice = GetPrice("massimo");
+            }
+
+            List<Product> filteredProducts = ErboristeriaManager.FetchProducts(minPrice, maxPrice);
+
+            if (filteredProducts.Count > 0)
+            {
+                foreach (Product p in filteredProducts)
+                {
+                    Console.WriteLine(p.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("Non ci sono prodotti in questa fascia di prezzo");
+            }
+        }
+
 
         private static string GetInfo(string message)
         {
             string info;
             do
             {
-                Console.WriteLine($"Inserisi il {message}");
-                info = Console.ReadLine();
+                Console.Write($"Inserisi il {message}: ");
+                info = Console.ReadLine().ToUpper();
             } while (string.IsNullOrWhiteSpace(info));
 
             return info; //conterrà ciò che ha scritto l'utente
         }
 
-        private static decimal GetPrice()
+        private static decimal GetPrice(string message)
         {
             decimal price;
             do
             {
-                Console.WriteLine("Inserisci il prezzo");
-            } while (!decimal.TryParse(Console.ReadLine(), out price));
-            //TODO: Aggiungere un controllo per cui il prezzo non può essere minore o uguale a 0
+                Console.Write($"Inserisci il prezzo {message}: ");
+            } while (!decimal.TryParse(Console.ReadLine(), out price) || price <= 0);
 
             return price;
         }
