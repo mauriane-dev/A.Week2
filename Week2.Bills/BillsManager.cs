@@ -61,7 +61,7 @@ namespace Week2.Bills
                 //con Split sulla stringa che contiene tutto il contenuto del file
                 //ottengo un array contentente le righe
                 //=> ogni elemento dell'array sarà una riga del file di testo
-                string[] rows = allBills.Split("\r\n");
+                string[] rows = allBills.Split("\n");
 
                 //ciclo sull'array di stringhe, ovvero di righe del file di testo
                 for (int i = 0; i < rows.Length; i++)
