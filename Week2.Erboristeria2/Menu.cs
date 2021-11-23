@@ -22,7 +22,7 @@ namespace Week2.Erboristeria2
                     "\n[4] Aumentare il prezzo di un prodotto" +
                     "\n[5] Aggiungere un nuovo prodotto" +
                     "\n[6] Visualizzare i prodotti di una certa fascia di prezzo" +
-                    "\n[7] Eliminare un prodtto dallo store" +
+                    "\n[7] Eliminare un prodotto dallo store" +
                     "\n[Q] Esci");
 
                 char choice = Console.ReadKey().KeyChar;
