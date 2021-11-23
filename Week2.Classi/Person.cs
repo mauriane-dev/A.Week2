@@ -116,9 +116,15 @@ namespace Week2.Classi
             FirstName = firstName;
             LastName = lastName;
             BirthDate = birthDate;
+            Count++;
         }
 
         //Proprietà di un altro tipo definito dall'utente sviluppatore
         public HomeAddress Address { get; set; }
+
+        public static int Count { get; set; }
+
+        //Proprietà statica
+
     }
 }

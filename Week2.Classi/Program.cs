@@ -55,5 +55,28 @@ p1.Address = new HomeAddress()
     PostalCode = 54322
 };
 
+//Type inference
+var p7 = new Person();
+
+var date = new DateTime(2021,4,5);
+
+Person p8 = new Person("NRIMRC123", "Marco", "Neri", new DateTime(1988, 7, 4));
+//Console.WriteLine(p8.Count); //1 - proprietà Count non statica
+//=> accedo alla proprietà dall'istanza di Person e quindi ogni istanza di Person ha il suo count
+
+Console.WriteLine(Person.Count); //1
+
+Person p9 = new Person("NRISRA123", "Sara", "Neri", new DateTime(1988, 3, 2));
+//Console.WriteLine(p9.Count); //1
+
+Console.WriteLine(Person.Count); //2
+
+//-------------------------------------
+
+ClassiManager.people.Add(p9);
+
+ClassiManager.people.Add(p8);
+
+//ClassiManager cm = new ClassiManager();
 
 char c = Console.ReadKey().KeyChar;
