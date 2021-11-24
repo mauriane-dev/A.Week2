@@ -45,3 +45,7 @@
 using Week2.Bills;
 
 Menu.Start();
+
+//Modificatori d'accesso
+//Person p = new Person(); //Se la classe Person in progetto OOP è public, posso aggiungere un riferimento al progetto OOP e 
+//'usare' Person.
