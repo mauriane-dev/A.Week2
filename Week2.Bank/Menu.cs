@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Week2.Bank.Entities;
 
 namespace Week2.Bank
 {
@@ -29,6 +30,7 @@ namespace Week2.Bank
                 switch (choice)
                 {
                     case '1':
+                        AddAccount();
                         break;
                     case '2':
                         break;
@@ -47,5 +49,58 @@ namespace Week2.Bank
                 }
             } while (choice != 'Q');
         }
+
+        private static void AddAccount()
+        {
+            //Recuperiamo i dati del cliente (nome e cognome)
+            string firstName = GetData("nome");
+
+            string lastName = GetData("cognome");
+
+            //Generiamo un codice cliente random 
+            string customerCode = AccountsManager.GenerateCustomerCode();
+
+            //Generiamo un numero di conto 
+            int number = AccountsManager.GenerateAccountNumber();
+
+            Customer customer = new Customer()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Code = customerCode
+            };
+
+            //Associamo i dati al nuovo conto
+            Account newAccount = new Account()
+            {
+                Number = number,
+                Customer = customer
+            };
+
+            //Aggiungiamo alla lista di conti 
+            bool isAdded = AccountsManager.AddNewAccount(newAccount);
+
+            if (isAdded)
+                Console.WriteLine($"Conto n. {newAccount.Number} aggiunto per il cliente " +
+                    $"{newAccount.Customer.Code} {newAccount.Customer.FirstName} " +
+                    $"{newAccount.Customer.LastName}");
+            else
+                Console.WriteLine("Ops... qualcosa è andato storto");
+
+        }
+
+        #region Metodi per recuperare input utente banchiere
+        private static string GetData(string message)
+        {
+            string info;
+            do
+            {
+                Console.WriteLine($"Inserisci il {message} del cliente");
+                info = Console.ReadLine();
+            } while (string.IsNullOrWhiteSpace(info));
+
+            return info;
+        }
+        #endregion
     }
 }
