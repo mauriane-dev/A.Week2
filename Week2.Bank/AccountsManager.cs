@@ -9,8 +9,46 @@ namespace Week2.Bank
 {
     internal class AccountsManager
     {
-        static List<Account> accounts = new List<Account>();
+        private static List<Account> accounts = LoadData();
 
+        private static List<Account> LoadData()
+        {
+            Customer c1 = new Customer()
+            {
+                Code = "T1234",
+                FirstName = "Mario",
+                LastName = "Rossi"
+            };
+
+            Customer c2 = new Customer()
+            {
+                Code = "A12345",
+                FirstName = "Marco",
+                LastName = "Rossini"
+            };
+
+            Account account1 = new Account()
+            {
+                Number = 1,
+                Customer = c1,
+                Balance = 1000
+            };
+
+            Account account2 = new Account()
+            {
+                Number = 2,
+                Customer = c2,
+                Balance = 1400
+            };
+
+            List<Account> bankAccounts = new List<Account>()
+            {
+                account1, account2
+            };
+
+            return bankAccounts;
+
+        }
 
         internal static string GenerateCustomerCode()
         {
@@ -33,30 +71,36 @@ namespace Week2.Bank
 
         internal static int GenerateAccountNumber()
         {
-            //Prendiamo l'ultimo conto della lista e il suo numero
-            //di conto e sommiamo 1.
-            int num = accounts.Count; //numero di conti
-            
             int newAccountNumber;
 
-            if (num > 0)
-            {
-                //per esempio, ci sono 3 conti => num = 3
-                //recupero il conto con l'ultimo indice => 2
-                Account account = accounts[num - 1];
+            //Prendiamo il numero di conto dell'ultimo elemento conto nella lista 
+            //di conti e sommiamo 1 per ottenere il nuovo numero di conti.
 
-                //recupero il numero di conto dell'ultimo conto in lista
-                int accountNumber = account.Number;
+            //int num = accounts.Count; //numero di conti, ovvero di elemeneti della lista di conti
 
-                newAccountNumber = accountNumber + 1;
-            }
+            //if (num > 0)
+            //{
+            //    //per esempio, ci sono 3 conti => num = 3
+            //    //recupero il conto con l'ultimo indice => 2
+            //    Account account = accounts[num - 1];
+
+            //    //recupero il numero di conto dell'ultimo conto in lista
+            //    int accountNumber = account.Number;
+
+            //    newAccountNumber = accountNumber + 1;
+            //}
+            //else
+            //{
+            //    newAccountNumber = 1;
+            //}
+
+            //Più compatto:
+            if (accounts.Count > 0)
+                newAccountNumber = accounts[accounts.Count - 1].Number + 1;
             else
-            {
                 newAccountNumber = 1;
-            }
-            return newAccountNumber;
 
-            //TODO: Provare a compattar il tutto
+            return newAccountNumber;
         }
 
         internal static bool AddNewAccount(Account newAccount)
@@ -68,7 +112,52 @@ namespace Week2.Bank
             }
 
             return false;
+        }
 
+        internal static bool PayInto(Account account, decimal amount)
+        {
+            if (account != null && amount > 0)
+            {
+                account.Balance += amount;
+                return true;
+            }
+            else
+                Console.WriteLine("Non si può procedere con il versamento");
+
+            return false;
+        }
+        internal static bool WithDrawFrom(Account account, decimal amount)
+        {
+            if (account != null && amount > 0)
+            {
+                account.Balance -= amount;
+                return true;
+            }
+            else
+                Console.WriteLine("Non si può procedere con il prelievo");
+
+            return false;
+        }
+
+        internal static Account GetByNumber(int number)
+        {
+            foreach (Account account in accounts)
+                if (account.Number == number)
+                {
+                    return account;
+                }
+
+            return null;
+        }
+
+        internal static bool Delete(Account accountToDelete)
+        {
+            bool isDeleted = false;
+
+            if (accountToDelete != null)
+                isDeleted = accounts.Remove(accountToDelete);
+
+            return isDeleted;
         }
     }
 }
