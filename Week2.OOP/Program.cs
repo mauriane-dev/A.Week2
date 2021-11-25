@@ -42,3 +42,8 @@ e1.PrintInfo();
 c1.PrintInfo();
 t1.PrintInfo();
 
+//is
+if (c1 is Customer)
+{
+    //...
+}
